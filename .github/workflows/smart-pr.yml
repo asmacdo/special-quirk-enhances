@@ -1,0 +1,25 @@
+name: Doc Bot Do
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  updateDocs:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'doc-bot-do'
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run Doc Bot
+        id: docbot
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          pip install openai
+          ./doc_bot_do.py "${{ github.event.issue.title }" "${{ github.event.issue.body }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+
