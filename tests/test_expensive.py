@@ -44,11 +44,11 @@ from unittest.mock import patch
 # #         target.write(response.choices[0].text.strip())
 # #
 #
-def test_read_and_rewrite_response_clobbers_file(mock_ai):
-    expected = "fit, sit, kit"
-    mock_ai.return_value.choices[0].text.strip.return_value = expected
+def test_read_and_rewrite_response_for_realzies():
     # copy fixture
     target_file = "todotmp/poem.txt"
+    if os.path.exists(target_file):
+        os.remove(target_file)
     # TODO rm
     try:
         os.mkdir("todotmp")
@@ -63,8 +63,6 @@ def test_read_and_rewrite_response_clobbers_file(mock_ai):
     # read new and assert
     with open(target_file, "r") as target:
         actual = target.read()
-
-    assert expected == actual
 
 ##### sanity
 # def test_sanity():

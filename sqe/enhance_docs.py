@@ -21,15 +21,18 @@ def read_and_rewrite(target_file, user_prompt):
     with open(target_file, "r") as target:
         base_document = target.readlines()
 
-    prompt = "Given <PROMPT>{user_prompt}</PROMPT>, return an edited version of the following text. <DOC>{base_document}</DOC>"
+    prompt = f"Given <PROMPT>{user_prompt}</PROMPT>, return an edited version of the following text. <DOC>{base_document}</DOC>"
 
+    # TODO Raises: openai.error.AuthenticationError
     response = openai.Completion.create(
         engine=ENGINE,
         prompt=prompt,
         max_tokens=500
     )
+    # Clobber quirk with enhanced
     with open(target_file, "w") as target:
-        target.write(response.choices[0].text.strip())
+        target.write(str(response))
+        # target.write(response.choices[0].text.strip())
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
