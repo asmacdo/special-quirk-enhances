@@ -19,7 +19,7 @@ def find_info_after_string(search, body):
 
 def read_and_rewrite(target_file, user_prompt):
     with open(target_file, "r") as target:
-        base_document = target.readlines()
+        base_document = target.read()
 
     prompt = f"Given <PROMPT>{user_prompt}</PROMPT>, return an edited version of the following text. <DOC>{base_document}</DOC>"
 
@@ -31,8 +31,8 @@ def read_and_rewrite(target_file, user_prompt):
     )
     # Clobber quirk with enhanced
     with open(target_file, "w") as target:
-        target.write(str(response))
-        # target.write(response.choices[0].text.strip())
+        # target.write(str(response))
+        target.write(response.choices[0].text.strip())
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:

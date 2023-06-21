@@ -57,13 +57,17 @@ def test_read_and_rewrite_response_for_realzies():
     fixture_file = "tests/fixtures/poem.txt"
     shutil.copyfile(fixture_file, target_file)
 
+    with open(target_file, "r") as target:
+        with open(fixture_file, "r") as fixture:
+            assert target.read() == fixture.read()
+
     # rewrite
     enhance_docs.read_and_rewrite(target_file, "make it rhyme")
 
     # read new and assert
     with open(target_file, "r") as target:
-        actual = target.read()
-
+        with open(fixture_file, "r") as fixture:
+            assert target.read() != fixture.read()
 ##### sanity
 # def test_sanity():
 #     assert False
